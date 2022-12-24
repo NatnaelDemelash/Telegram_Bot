@@ -31,10 +31,17 @@ bot.command("start", (ctx) => {
       " " +
       "👋 Welcome to GoodayOn telegram bot 🤖"
   );
-  ctx.reply(goodayOn);
+  ctx.telegram.sendMessage(ctx.chat.id, goodayOn, {
+    reply_markup: {
+      inline_keyboard: [
+        [{ text: "GoodayOn Website", url: "https://gooday.io" }],
+      ],
+    },
+  });
   ctx.reply(helpMessage);
 });
 
+//help command refferense
 bot.help((ctx) => {
   ctx.reply(helpMessage);
 });
@@ -47,9 +54,142 @@ bot.command("register", (ctx) => {
   ctx.reply("What is your full name?");
 });
 
+//Service provider request
 bot.command("serviceProviderRequest", (ctx) => {
-  ctx.reply("What type of service provider did you want?");
-  ctx.reply(services);
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "What type of service provider did you want?\n የሚፈልጉትን የባለሙያ አይነት ይምረጡ ",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "🧑‍🍳HomeChores \n(የቤት ውስጥ ስራ እርዳታ ባለሙያ)",
+              callback_data: "homeChores",
+            },
+          ],
+          [
+            {
+              text: "🛠️In-home Technicians & maintenance \n(የቴክኒሽያን ጥገና ባለሙያ)",
+              callback_data: "technicianWorkers",
+            },
+          ],
+          [
+            {
+              text: "👷‍♂️Construction & Finishing \n(ግንባታ ፊንሽንግ እና ጥገና ባለሙያ)",
+              callback_data: "constructionWorkers",
+            },
+          ],
+          [
+            {
+              text: "🧑‍💼Business Operation \n(ለንግድ ስራ አስፈላጊ ባለሙያ)",
+              callback_data: "businessOperation",
+            },
+          ],
+        ],
+      },
+    }
+  );
+});
+
+//for homeMaid SPs...
+bot.action("homeChores", (ctx) => {
+  ctx.deleteMessage();
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Home Maid Service Providers \n(የቤት ውስጥ ስራ እርዳታ ባለሙያ)",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "Cooking Maid (የቤት ምግብ ሰራተኛ)", callback_data: "CM" },
+            { text: "Cleaning Maid(የጽዳት ባለሙያ)", callback_data: "CL" },
+          ],
+          [
+            { text: "Nanny(ሞግዚት)", callback_data: "NN" },
+            { text: "Catering(የምግብ ዝግጅት ባለሙያ)", callback_data: "CT" },
+          ],
+          [
+            { text: "Chauffer(ሹፌር)", callback_data: "CF" },
+            { text: "Tutor(አስጠኚ)", callback_data: "TU" },
+          ],
+        ],
+      },
+    }
+  );
+});
+
+//for technician SPs...
+bot.action("technicianWorkers", (ctx) => {
+  ctx.deleteMessage();
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Technicians & maintenance \n(የቴክኒሽያን ጥገና ባለሙያ)",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "Satellite Dish Tech (የዲሽ ባለሙያ)", callback_data: "SD" },
+            { text: "Electrician (ኤሌክትሪክ ሰራተኛ)", callback_data: "EL" },
+          ],
+          [
+            { text: "Plumber(የቧንቧ ሰራተኛ)", callback_data: "PB" },
+            { text: "Electronics Repair(የኤሌክትሮኒክስ ጥገና)", callback_data: "ER" },
+          ],
+          [
+            { text: "Computer tech(የኮምፒውተር ጥገና ባለሙያ)", callback_data: "CS" },
+            {
+              text: "Home Appliance Repair \n(ፍሪጅ፣ምጣድ፣ ልብስ-ማጠቢያ ጥገና)",
+              callback_data: "HA",
+            },
+          ],
+        ],
+      },
+    }
+  );
+});
+
+//for construction SPs...
+bot.action("constructionWorkers", (ctx) => {
+  ctx.deleteMessage();
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Construction & Finishing \n(ግንባታ ፊንሽንግ እና ጥገና ባለሙያ)",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "Construction worker(የግንበኛ ባለሙያ)", callback_data: "CO" },
+            { text: "Aluminium worker(የአልሙኒየም ሰራተኛ)", callback_data: "AL" },
+          ],
+          [
+            { text: "Gypsum worker(የጂፕሰም ሰራተኛ)", callback_data: "GY" },
+            { text: "Painting(የቀለም ቀቢ ባለሙያ)", callback_data: "PA" },
+          ],
+        ],
+      },
+    }
+  );
+});
+
+//for bussiness operation SPs...
+bot.action("businessOperation", (ctx) => {
+  ctx.deleteMessage();
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Business Operation \n(ለንግድ ስራ አስፈላጊ ባለሙያ)",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "Errand runner(ጉዳይ አስፈጻሚ)", callback_data: "ER" },
+            { text: "Salesman(የሽያጭ ሰራተኛ)", callback_data: "SM" },
+          ],
+          [{ text: "Accountant(የሂሳብ ሰራተኛ)", callback_data: "AC" }],
+        ],
+      },
+    }
+  );
 });
 
 bot.launch();
