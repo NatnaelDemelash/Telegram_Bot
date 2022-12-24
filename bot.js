@@ -5,7 +5,7 @@ const { Telegraf } = require("telegraf");
 const bot = new Telegraf("5923084192:AAFohRBPSJfPf1jZ7f8h_aG8_jULCJ3L7q0");
 
 const goodayOn =
-  "💁 GoodayOn is a gig patform that connects a skilled professionals \n with individuals and bussiness in need of their services. \nጉዳይኦን በቅርብ ርቀት ላይ የሚገኙ አገልግሎት ሰጪ (ባለሙያ) ሰራተኞች እና አገልግሎት ፈላጊ (ተጠቃሚዎችን) በቀላሉ የሚያገናኝ የሞባይል መተግበሪያ ነው።";
+  "💁 GoodayOn is a gig platform that connects a skilled professionals \n with individuals and bussiness in need of their services. \nጉዳይኦን በቅርብ ርቀት ላይ የሚገኙ አገልግሎት ሰጪ (ባለሙያ) ሰራተኞች እና አገልግሎት ፈላጊ (ተጠቃሚዎችን) በቀላሉ የሚያገናኝ የሞባይል መተግበሪያ ነው።";
 
 const helpMessage = `
 Use this commands to communicate
