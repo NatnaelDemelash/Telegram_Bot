@@ -15,12 +15,13 @@ Use this commands to communicate
 /help - for command referense (እገዛ ለማግኘት)
 `;
 
-const services = `
-Available service category
-/homeMaids - for home made chores
-/technicians - for Technicians
-/construction -for finishing & const. 
-`;
+const regsiterInfo = `
+ℹ️ If you are a service provider and want to find clients by promoting your work on goodayOn, important information you should send:\n
+አገልግሎት ሰጪ ከሆኑ እና ስራዎትን በጉዳይ ላይ በማስተዋወቅ ደንበኞችን ማግኘት የሚፈልጉ ከሆነ መላክ የሚገባዎት አስፈላጊ መረጃዎች፡\n
+ 1- Profile picture (ከትከሻ በላይ የተነሳ ፊት የሚያሳይ ፎቶ)፣\n 
+ 2- ID picture (የመታወቂያ፣ መንጃ ፍቃድ፣ ፓስፖርት ፎቶ) እና \n 
+ 3- Phone number (ስልክ ቁጥር)
+`
 
 // Initiated when the user /start
 bot.command("start", (ctx) => {
@@ -44,14 +45,6 @@ bot.command("start", (ctx) => {
 //help command refferense
 bot.help((ctx) => {
     ctx.reply(helpMessage);
-});
-
-//Service providers Onboarding
-bot.command("register", (ctx) => {
-    ctx.reply(
-        "Ok if you want to register as a service provider, Please give us your info"
-    );
-    ctx.reply("What is your full name?");
 });
 
 //Service provider request
@@ -215,6 +208,13 @@ bot.action('go_back', ctx => {
             },
         }
     );
+});
+
+
+//Register as a service provider
+bot.command("register", ctx => {
+    ctx.telegram.sendMessage(ctx.chat.id, regsiterInfo);
 })
+
 
 bot.launch();
