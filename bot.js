@@ -85,16 +85,16 @@ bot.action("homeChores", (ctx) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "Cooking Maid (የቤት ምግብ ሰራተኛ)", callback_data: "CM" },
-                        { text: "Cleaning Maid(የጽዳት ባለሙያ)", callback_data: "CL" },
+                        { text: "Cooking Maid (የቤት ምግብ ሰራተኛ)", callback_data: "cooking-maid" },
+                        { text: "Cleaning Maid(የጽዳት ባለሙያ)", callback_data: "cleaning-maid" },
                     ],
                     [
-                        { text: "Nanny(ሞግዚት)", callback_data: "NN" },
-                        { text: "Catering(የምግብ ዝግጅት ባለሙያ)", callback_data: "CT" },
+                        { text: "Nanny(ሞግዚት)", callback_data: "nanny" },
+                        { text: "Catering(የምግብ ዝግጅት ባለሙያ)", callback_data: "catering" },
                     ],
                     [
-                        { text: "Chauffer(ሹፌር)", callback_data: "CF" },
-                        { text: "Tutor(አስጠኚ)", callback_data: "TU" },
+                        { text: "Chauffer(ሹፌር)", callback_data: "chauffer" },
+                        { text: "Tutor(አስጠኚ)", callback_data: "tutor" },
                     ],
                     //Go back menu
                     [{ text: "🔙Go back (ወደዋናው ዝርዝር ይመለሱ)", callback_data: "go_back" }, ]
@@ -215,6 +215,13 @@ bot.action('go_back', ctx => {
 bot.command("register", ctx => {
     ctx.telegram.sendMessage(ctx.chat.id, regsiterInfo);
 })
+
+//handling employers request
+let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'chauffer', 'tutor'];
+bot.action(serviceRequest, ctx => {
+    let request = ctx.match.input;
+    console.log(request)
+});
 
 
 bot.launch();
