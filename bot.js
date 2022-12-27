@@ -4,6 +4,10 @@ const { Telegraf } = require("telegraf");
 //creating an instanse of bot using the telegraf constructor and included the API token
 const bot = new Telegraf("5923084192:AAFohRBPSJfPf1jZ7f8h_aG8_jULCJ3L7q0");
 
+let requestedService = "";
+
+
+
 const goodayOn =
     "💁 GoodayOn is a gig platform that connects a skilled professionals \n with individuals and bussiness in need of their services. \nጉዳይኦን በቅርብ ርቀት ላይ የሚገኙ አገልግሎት ሰጪ (ባለሙያ) ሰራተኞች እና አገልግሎት ፈላጊ (ተጠቃሚዎችን) በቀላሉ የሚያገናኝ የሞባይል መተግበሪያ ነው።";
 
@@ -18,6 +22,7 @@ Use this commands to communicate
 const regsiterInfo = `
 ℹ️ If you are a service provider and want to find clients by promoting your work on goodayOn, important information you should send:\n
 አገልግሎት ሰጪ ከሆኑ እና ስራዎትን በጉዳይ ላይ በማስተዋወቅ ደንበኞችን ማግኘት የሚፈልጉ ከሆነ መላክ የሚገባዎት አስፈላጊ መረጃዎች፡\n
+--------------------------------------------------------
  1- Profile picture (ከትከሻ በላይ የተነሳ ፊት የሚያሳይ ፎቶ)፣\n 
  2- ID picture (የመታወቂያ፣ መንጃ ፍቃድ፣ ፓስፖርት ፎቶ) እና \n 
  3- Phone number (ስልክ ቁጥር)
@@ -51,7 +56,7 @@ bot.help((ctx) => {
 bot.command("serviceProviderRequest", (ctx) => {
     ctx.telegram.sendMessage(
         ctx.chat.id,
-        "What type of service provider did you want?\n የሚፈልጉትን የባለሙያ አይነት ይምረጡ ", {
+        "What type of service provider did you want? \nየሚፈልጉትን የባለሙያ አይነት ይምረጡ", {
             reply_markup: {
                 inline_keyboard: [
                     [{
@@ -113,18 +118,18 @@ bot.action("technicianWorkers", (ctx) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "Satellite Dish Tech (የዲሽ ባለሙያ)", callback_data: "SD" },
-                        { text: "Electrician (ኤሌክትሪክ ሰራተኛ)", callback_data: "EL" },
+                        { text: "Satellite Dish Tech (የዲሽ ባለሙያ)", callback_data: "satellite-dish" },
+                        { text: "Electrician (ኤሌክትሪክ ሰራተኛ)", callback_data: "electrician" },
                     ],
                     [
-                        { text: "Plumber(የቧንቧ ሰራተኛ)", callback_data: "PB" },
-                        { text: "Electronics Repair(የኤሌክትሮኒክስ ጥገና)", callback_data: "ER" },
+                        { text: "Plumber(የቧንቧ ሰራተኛ)", callback_data: "plumber" },
+                        { text: "Electronics Repair(የኤሌክትሮኒክስ ጥገና)", callback_data: "electronics-repair" },
                     ],
                     [
-                        { text: "Computer tech(የኮምፒውተር ጥገና ባለሙያ)", callback_data: "CS" },
+                        { text: "Computer tech(የኮምፒውተር ጥገና ባለሙያ)", callback_data: "computer-tech" },
                         {
                             text: "Home Appliance Repair \n(ፍሪጅ፣ምጣድ፣ ልብስ-ማጠቢያ ጥገና)",
-                            callback_data: "HA",
+                            callback_data: "home-repair",
                         },
                     ],
                     //Go back menu
@@ -144,12 +149,12 @@ bot.action("constructionWorkers", (ctx) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "Construction worker(የግንበኛ ባለሙያ)", callback_data: "CO" },
-                        { text: "Aluminium worker(የአልሙኒየም ሰራተኛ)", callback_data: "AL" },
+                        { text: "Construction worker(የግንበኛ ባለሙያ)", callback_data: "construction" },
+                        { text: "Aluminium worker(የአልሙኒየም ሰራተኛ)", callback_data: "aluminium" },
                     ],
                     [
-                        { text: "Gypsum worker(የጂፕሰም ሰራተኛ)", callback_data: "GY" },
-                        { text: "Painting(የቀለም ቀቢ ባለሙያ)", callback_data: "PA" },
+                        { text: "Gypsum worker(የጂፕሰም ሰራተኛ)", callback_data: "gypsum" },
+                        { text: "Painting(የቀለም ቀቢ ባለሙያ)", callback_data: "painting" },
                     ],
                     //Go back menu
                     [{ text: "🔙Go back (ወደዋናው ዝርዝር ይመለሱ)", callback_data: "go_back" }, ]
@@ -168,10 +173,10 @@ bot.action("businessOperation", (ctx) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "Errand runner(ጉዳይ አስፈጻሚ)", callback_data: "ER" },
-                        { text: "Salesman(የሽያጭ ሰራተኛ)", callback_data: "SM" },
+                        { text: "Errand runner(ጉዳይ አስፈጻሚ)", callback_data: "errand" },
+                        { text: "Salesman(የሽያጭ ሰራተኛ)", callback_data: "salesman" },
                     ],
-                    [{ text: "Accountant(የሂሳብ ሰራተኛ)", callback_data: "AC" }],
+                    [{ text: "Accountant(የሂሳብ ሰራተኛ)", callback_data: "accountant" }],
                     //Go back menu
                     [{ text: "🔙Go back (ወደዋናው ዝርዝር ይመለሱ)", callback_data: "go_back" }, ]
                 ],
@@ -217,11 +222,58 @@ bot.command("register", ctx => {
 })
 
 //handling employers request
-let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'chauffer', 'tutor'];
+let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'chauffer', 'tutor', 'satellite-dish', 'electrician', 'plumber', 'electronics-repair', 'computer-tech', 'home-repair', 'construction', 'aluminium', 'gypsum', 'painting', 'errand', 'salesman', 'accountant'];
 bot.action(serviceRequest, ctx => {
-    let request = ctx.match.input;
-    console.log(request)
+    requestedService = ctx.match.input.toUpperCase();
+    console.log(requestedService);
+    ctx.reply("👍Ok " + ctx.from.first_name + " you choosed " + requestedService + " service provider!\n--------------------------------------------------------------------\n❓Now please tell us a brief description about the gig.\n ስለሚፈልጉት ባለሙያ እንዲሁም ስለስራው በቂ የሆነ መገለጫ ይንገሩን");
+
 });
+
+
+bot.hears('phone', (ctx) => {
+    console.log(ctx.from)
+    bot.telegram.sendMessage(ctx.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
+})
+
+bot.hears("location", (ctx) => {
+    console.log(ctx.from);
+    const userName = ctx.from.username;
+    bot.telegram.sendMessage(ctx.chat.id, 'Can we access your location?', requestLocationKeyboard);
+})
+
+//constructor for providing phone number to the bot
+const requestPhoneKeyboard = {
+    "reply_markup": {
+        "one_time_keyboard": true,
+        "keyboard": [
+            [{
+                text: "My phone number",
+                request_contact: true,
+                one_time_keyboard: true
+            }],
+            ["Cancel"]
+        ]
+    }
+
+};
+
+//constructor for proving location to the bot
+const requestLocationKeyboard = {
+    "reply_markup": {
+        "one_time_keyboard": true,
+        "keyboard": [
+            [{
+                text: "My location",
+                request_location: true,
+                one_time_keyboard: true
+            }],
+            ["Cancel"]
+        ]
+    }
+
+}
+
 
 
 bot.launch();
