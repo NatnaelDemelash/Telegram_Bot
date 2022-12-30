@@ -5,11 +5,13 @@ const { Telegraf } = require("telegraf");
 const bot = new Telegraf("5923084192:AAFohRBPSJfPf1jZ7f8h_aG8_jULCJ3L7q0");
 
 let requestedService = "";
-
+let employerPhone = "";
+let gigDescription = "";
+// let employerLocation = "";
 
 
 const goodayOn =
-    "💁 GoodayOn is a gig platform that connects a skilled professionals \n with individuals and bussiness in need of their services. \nጉዳይኦን በቅርብ ርቀት ላይ የሚገኙ አገልግሎት ሰጪ (ባለሙያ) ሰራተኞች እና አገልግሎት ፈላጊ (ተጠቃሚዎችን) በቀላሉ የሚያገናኝ የሞባይል መተግበሪያ ነው።";
+    "💁 <b>GoodayOn</b>  - <i>is a gig platform that connects a skilled professionals with individuals and bussiness in need of their services.</i>\n\nጉዳይኦን በቅርብ ርቀት ላይ የሚገኙ አገልግሎት ሰጪ (ባለሙያ) \nሰራተኞች እና አገልግሎት ፈላጊ (ተጠቃሚዎችን) በቀላሉ የሚያገናኝ የሞባይል መተግበሪያ ነው።";
 
 const helpMessage = `
 Use this commands to communicate
@@ -22,7 +24,7 @@ Use this commands to communicate
 const regsiterInfo = `
 ℹ️ If you are a service provider and want to find clients by promoting your work on goodayOn, important information you should send:\n
 አገልግሎት ሰጪ ከሆኑ እና ስራዎትን በጉዳይ ላይ በማስተዋወቅ ደንበኞችን ማግኘት የሚፈልጉ ከሆነ መላክ የሚገባዎት አስፈላጊ መረጃዎች፡\n
---------------------------------------------------------
+-------------------------------------------------------- 
  1- Profile picture (ከትከሻ በላይ የተነሳ ፊት የሚያሳይ ፎቶ)፣\n 
  2- ID picture (የመታወቂያ፣ መንጃ ፍቃድ፣ ፓስፖርት ፎቶ) እና \n 
  3- Phone number (ስልክ ቁጥር)
@@ -37,7 +39,7 @@ bot.command("start", (ctx) => {
         " " +
         "👋 Welcome to GoodayOn telegram bot 🤖"
     );
-    ctx.telegram.sendMessage(ctx.chat.id, goodayOn, {
+    ctx.telegram.sendMessage(ctx.chat.id, goodayOn, { parse_mode: "HTML" }, {
         reply_markup: {
             inline_keyboard: [
                 [{ text: "GoodayOn Website", url: "https://gooday.io" }],
@@ -218,50 +220,62 @@ bot.action('go_back', ctx => {
 
 //Register as a service provider
 bot.command("register", ctx => {
-    ctx.telegram.sendMessage(ctx.chat.id, regsiterInfo);
+    ctx.telegram.sendMessage(ctx.chat.id, regsiterInfo, { parse_mode: "HTML" });
 })
 
 //handling employers request
 let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'chauffer', 'tutor', 'satellite-dish', 'electrician', 'plumber', 'electronics-repair', 'computer-tech', 'home-repair', 'construction', 'aluminium', 'gypsum', 'painting', 'errand', 'salesman', 'accountant'];
 bot.action(serviceRequest, ctx => {
     requestedService = ctx.match.input.toUpperCase();
-    console.log(requestedService);
-    ctx.reply("👍Ok " + ctx.from.first_name + " you choosed " + requestedService + " service provider!\n--------------------------------------------------------------------\n❓Now please tell us a brief description about the gig.\n ስለሚፈልጉት ባለሙያ እንዲሁም ስለስራው በቂ የሆነ መገለጫ ይንገሩን");
+    // console.log(requestedService);
+    ctx.reply("👍Ok " + ctx.from.first_name + " you choosed " + requestedService + " service provider!\n\nℹ️Now please tell us a brief description about the gig.\n ስለሚፈልጉት ባለሙያ እንዲሁም ስለስራው በቂ የሆነ መገለጫ ይንገሩን");
+    bot.use((ctx) => {
+        gigDescription = ctx.message.text;
+        console.log(gigDescription)
+    });
 
 });
 
-
 bot.hears('phone', (ctx) => {
     console.log(ctx.from)
-    bot.telegram.sendMessage(ctx.chat.id, 'Can we get access to your phone number?', requestPhoneKeyboard);
+    bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact' keyboard button below \nto share your contact number", requestPhoneKeyboard, { parse_mode: "HTML" });
+    bot.use((ctx) => {
+        employerPhone = ctx.message.contact.phone_number;
+    })
 })
+
 
 bot.hears("location", (ctx) => {
     console.log(ctx.from);
     const userName = ctx.from.username;
-    bot.telegram.sendMessage(ctx.chat.id, 'Can we access your location?', requestLocationKeyboard);
+    bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact'keyboard button below to share your contact number", requestLocationKeyboard);
+    bot.use((ctx) => {
+        // console.log(ctx.message.location);
+        employerLocation = ctx.message.location
+    })
 })
 
 //constructor for providing phone number to the bot
 const requestPhoneKeyboard = {
     "reply_markup": {
         "one_time_keyboard": true,
+        "resize_keyboard": true,
         "keyboard": [
             [{
-                text: "My phone number",
+                text: "Share my contact",
                 request_contact: true,
                 one_time_keyboard: true
-            }],
-            ["Cancel"]
+            }]
         ]
     }
 
 };
 
-//constructor for proving location to the bot
+// constructor for proving location to the bot
 const requestLocationKeyboard = {
     "reply_markup": {
         "one_time_keyboard": true,
+        "resize_keyboard": true,
         "keyboard": [
             [{
                 text: "My location",
@@ -273,7 +287,6 @@ const requestLocationKeyboard = {
     }
 
 }
-
 
 
 bot.launch();
