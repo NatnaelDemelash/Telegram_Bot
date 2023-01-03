@@ -6,8 +6,9 @@ const bot = new Telegraf("5923084192:AAFohRBPSJfPf1jZ7f8h_aG8_jULCJ3L7q0");
 
 let requestedService = "";
 let employerPhone = "";
-let gigDescription = "";
 // let employerLocation = "";
+let gigDescription = "";
+let detailMessage;
 
 
 const goodayOn =
@@ -228,15 +229,17 @@ let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'cha
 bot.action(serviceRequest, ctx => {
     requestedService = ctx.match.input.toUpperCase();
     // console.log(requestedService);
-    ctx.reply("👍Ok " + ctx.from.first_name + " you choosed " + requestedService + " service provider!\n\nℹ️Now please tell us a brief description about the gig.\n ስለሚፈልጉት ባለሙያ እንዲሁም ስለስራው በቂ የሆነ መገለጫ ይንገሩን");
-    bot.use((ctx) => {
-        gigDescription = ctx.message.text;
-        console.log(gigDescription)
-    });
+    ctx.reply("ℹ️ Please tell us detailed information regarding the job and the service provider you want.\n\nስለ ስራው እንዲሁም ስለሚፈልጉት የባለሙያ አይነት ግልጽ የሆነ ማብራሪያ ይንገሩን");
 
+    bot.on('text', (ctx) => {
+        gigDescription = ctx.message.text;
+        detailMessage = `<b><u>REQUEST DETAIL</u></b> \n\n<i><b>requtsed service</b></i>: 👉 ${requestedService} 
+        \n<i><b>job description</b></i>: ${gigDescription}`
+        ctx.telegram.sendMessage(ctx.chat.id, detailMessage, { parse_mode: "HTML" })
+    });
 });
 
-bot.hears('phone', (ctx) => {
+bot.command('/phone', (ctx) => {
     console.log(ctx.from)
     bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact' keyboard button below \nto share your contact number", requestPhoneKeyboard, { parse_mode: "HTML" });
     bot.use((ctx) => {
@@ -244,8 +247,7 @@ bot.hears('phone', (ctx) => {
     })
 })
 
-
-bot.hears("location", (ctx) => {
+bot.command("location", (ctx) => {
     console.log(ctx.from);
     const userName = ctx.from.username;
     bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact'keyboard button below to share your contact number", requestLocationKeyboard);
