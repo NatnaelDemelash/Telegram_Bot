@@ -32,22 +32,22 @@ const regsiterInfo = `
 `
 
 // Initiated when the user /start
-bot.command("start", (ctx) => {
-    ctx.reply(
+bot.command("start", async(ctx) => {
+    await ctx.reply(
         "Hello" +
         " " +
         ctx.from.first_name +
         " " +
         "👋 Welcome to GoodayOn telegram bot 🤖"
     );
-    ctx.telegram.sendMessage(ctx.chat.id, goodayOn, { parse_mode: "HTML" }, {
+    await ctx.telegram.sendMessage(ctx.chat.id, goodayOn, { parse_mode: "HTML" }, {
         reply_markup: {
             inline_keyboard: [
                 [{ text: "GoodayOn Website", url: "https://gooday.io" }],
             ],
         },
     });
-    ctx.reply(helpMessage);
+    await ctx.reply(helpMessage);
 });
 
 //help command refferense
@@ -229,31 +229,43 @@ let serviceRequest = ['cooking-maid', 'cleaning-maid', 'nanny', 'catering', 'cha
 bot.action(serviceRequest, ctx => {
     requestedService = ctx.match.input.toUpperCase();
     // console.log(requestedService);
+
     ctx.reply("ℹ️ Please tell us detailed information regarding the job and the service provider you want.\n\nስለ ስራው እንዲሁም ስለሚፈልጉት የባለሙያ አይነት ግልጽ የሆነ ማብራሪያ ይንገሩን");
 
-    bot.on('text', (ctx) => {
+    bot.on('text', async(ctx) => {
         gigDescription = ctx.message.text;
+        console.log(gigDescription);
         detailMessage = `<b><u>REQUEST DETAIL</u></b> \n\n<i><b>requtsed service</b></i>: 👉 ${requestedService} 
-        \n<i><b>job description</b></i>: ${gigDescription}`
-        ctx.telegram.sendMessage(ctx.chat.id, detailMessage, { parse_mode: "HTML" })
+        \n<i><b>job description</b></i>: ${gigDescription} `
+        console.log(detailMessage)
+        await ctx.telegram.sendMessage(ctx.chat.id, detailMessage, { parse_mode: "HTML" })
+        await ctx.reply('Please provide us your /phone number')
+
+
     });
+
+
 });
 
-bot.command('/phone', (ctx) => {
+bot.command('phone', async(ctx) => {
     console.log(ctx.from)
     bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact' keyboard button below \nto share your contact number", requestPhoneKeyboard, { parse_mode: "HTML" });
     bot.use((ctx) => {
+        console.log(ctx.message.contact)
         employerPhone = ctx.message.contact.phone_number;
+        console.log(employerPhone)
     })
 })
 
-bot.command("location", (ctx) => {
+bot.hears("location", (ctx) => {
     console.log(ctx.from);
     const userName = ctx.from.username;
     bot.telegram.sendMessage(ctx.chat.id, "Please use 'Share my contact'keyboard button below to share your contact number", requestLocationKeyboard);
     bot.use((ctx) => {
         // console.log(ctx.message.location);
-        employerLocation = ctx.message.location
+        latitude = ctx.message.location.latitude
+        longitude = ctx.message.location.longitude
+        console.log(latitude, longitude);
     })
 })
 
@@ -289,6 +301,8 @@ const requestLocationKeyboard = {
     }
 
 }
+
+
 
 
 bot.launch();
